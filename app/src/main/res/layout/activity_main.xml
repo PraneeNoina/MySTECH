@@ -79,6 +79,7 @@
         </LinearLayout>
 
         <TextView
+
             android:id="@+id/txtRegister"
             android:textStyle="bold"
             android:textColor="#df1313"
