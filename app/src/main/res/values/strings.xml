@@ -8,4 +8,6 @@
     <string name="name">Name</string>
     <string name="surname">Surname</string>
     <string name="address">Address</string>
+    <string name="save">save</string>
+    <string name="register">Register1</string>
 </resources>
