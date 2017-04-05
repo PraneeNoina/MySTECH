@@ -79,7 +79,7 @@
         </LinearLayout>
 
         <TextView
-
+            android:clickable="true"
             android:id="@+id/txtRegister"
             android:textStyle="bold"
             android:textColor="#df1313"
@@ -93,6 +93,7 @@
     </LinearLayout>
 
     <Button
+        android:clickable="true"
         android:id="@+id/btnLogin"
         android:text="@string/login"
         android:layout_alignParentBottom="true"
