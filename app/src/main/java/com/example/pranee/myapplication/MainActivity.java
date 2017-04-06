@@ -9,12 +9,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Explicit ประกาศตัวแปร
     private EditText userEditText, passwordEditText;
     private TextView textView;
     private Button button;
+    private String userString, passwordString,truePasswordString;
+    private boolean aBoolean = true;
+
 
 
     @Override
@@ -57,8 +63,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //For Button
         if (v == button) {
             Log.d(tag, "You Click Button");
+
+            //Get Value From Edit Text
+            userString = userEditText.getText().toString().trim();
+            passwordString = passwordEditText.getText().toString().trim();
+
+            //Check Space
+            if (userString.equals("") || passwordString.equals("")) {
+                //Have Space
+                MyAlert myAlert = new MyAlert(MainActivity.this);
+                myAlert.myDialog("Have Space", "Please Fill All");
+            } else {
+                //No Space
+                checkUserAnPass();
+            }
+
         }
 
     }   // onClick
+
+    private void checkUserAnPass() {
+        try {
+
+            GetUser getUser = new GetUser(MainActivity.this);
+            getUser.execute();
+
+            String strJson = getUser.get();
+            Log.d("TestV2", "e check ==>" +strJson);
+
+            // Check User
+            JSONArray jsonArray = new JSONArray(strJson);
+            for (int i = 0; i < jsonArray.length(); i += 1) {
+
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                if (userString.equals(jsonObject.getString("User"))) {
+                    aBoolean = false;
+                    truePasswordString = jsonObject.getString("Password");
+                }
+
+            }   // for
+            if (aBoolean) {
+                MyAlert myAlert = new MyAlert(MainActivity.this);
+                myAlert.myDialog("User Fales","No This User on Database");
+            } else if (!(passwordString.equals(truePasswordString))) {
+                MyAlert myAlert = new MyAlert(MainActivity.this);
+                myAlert.myDialog("Password Fales","Please Try agin");
+
+            } else {
+                Intent intent = new Intent(MainActivity.this,ServiceActiviry.class);
+                startActivity(intent);
+                finish();
+            }
+
+        } catch (Exception e) {
+            Log.d("TestV2", "e Check ==>" + e.toString());
+
+        }
+    }
 
 }   //Main Class นี่คือ Class หลัก
